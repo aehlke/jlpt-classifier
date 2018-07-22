@@ -49,6 +49,32 @@ def _get_wikipedia_word_frequencies():
     return frequencies
 
 
+def _get_vn_word_frequencies():
+    '''
+    Maps word to frequency rank in visual novel corpus.
+    '''
+    frequencies = {}
+    with open('visual_novel_word_freq.txt', 'r') as f:
+        for (line_number, line) in enumerate(f):
+            (freq, pos1, pos2, pos3, pos4, reading_spelling, etym, word_class,
+             freq_raw, conj, pronunciation, spelling, *rest) = line.split('\t')
+            frequencies[spelling] = line_number
+    return frequencies
+
+
+def _get_narou_word_frequencies():
+    '''
+    Maps word to frequency rank in corpus.
+    '''
+    frequencies = {}
+    with open('narou_word_freq.txt', 'r') as f:
+        for (line_number, line) in enumerate(f):
+            (freq, pos1, pos2, pos3, pos4, reading_spelling, etym, word_class,
+             freq_raw, conj, pronunciation, spelling, *rest) = line.split('\t')
+            frequencies[spelling] = line_number
+    return frequencies
+
+
 def _load_jmdict():
     '''
     Maps JMDict ID to JMDict entry.
@@ -88,12 +114,9 @@ def _get_jlpt_lists(jmdict):
 
 def plot_jlpt_list_densities(jlpt_levels, word_frequencies):
     fig, ax = plot.subplots(5, sharex=True)
-    #subplot.plot.figure(level_number)
-    #ax[-1].set_xlabel('Word Frequency (Highest to Lowest)')
     ax[0].set_title(
         f'Histogram of JLPT Levels Mapped to Word Frequency List')
-    ax[0].set_xlim([0, 20000])
-    #ax[0].set_ylim([0, 70])
+    ax[0].set_xlim([0, 10000])
     for (level_number, level_entries) in jlpt_levels.items():
         subplot = ax[level_number - 1]
         subplot.set_ylabel(f'N{level_number}')
@@ -132,15 +155,24 @@ def classify():
     print('Getting JLPT levels...')
     jlpt_lists = _get_jlpt_lists(jmdict)
 
-    print('Getting Novel Word Frequencies...')
-    novel_word_frequencies = _get_cb4960_word_frequencies()
+    #print('Getting Novel Word Frequencies...')
+    #novel_word_frequencies = _get_cb4960_word_frequencies()
+    #print('Plotting Novel JLPT histograms...')
+    #plot_jlpt_list_densities(jlpt_lists, novel_word_frequencies)
 
-    print('Plotting Novel JLPT histograms...')
-    plot_jlpt_list_densities(jlpt_lists, novel_word_frequencies)
+    #print('Getting Visual Novels Word Frequencies...')
+    #vn_word_frequencies = _get_vn_word_frequencies()
+    #print('Plotting Visual Novels JLPT histograms...')
+    #plot_jlpt_list_densities(jlpt_lists, vn_word_frequencies)
 
+    print('Getting Narou Word Frequencies...')
+    narou_word_frequencies = _get_narou_word_frequencies()
+    print('Plotting Narou JLPT histograms...')
+    plot_jlpt_list_densities(jlpt_lists, narou_word_frequencies)
+
+    # I did not find this Wikipedia word freq list useful.
     #print('Getting Wikipedia Word Frequencies...')
     #wikipedia_word_frequencies = _get_wikipedia_word_frequencies()
-
     #print('Plotting Wikipedia JLPT histograms...')
     #plot_jlpt_list_densities(jlpt_lists, wikipedia_word_frequencies)
 
