@@ -24,17 +24,28 @@ def _make_build_dir():
         os.makedirs('build')
 
 
-
-
-def _get_word_frequencies():
+def _get_cb4960_word_frequencies():
     '''
-    Maps word to (frequency_ordinal, frequency) in corpus.
+    Maps word to frequency_ordinal in corpus.
     '''
     frequencies = {}
     with open('cb4960_novel_word_freq.txt', 'r') as f:
         for line_number, line in enumerate(f):
             frequency, word, *rest = line.split('\t')
-            frequencies[word] = (line_number, frequency)
+            frequencies[word] = line_number
+    return frequencies
+
+
+def _get_wikipedia_word_frequencies():
+    '''
+    Maps word to frequency rank in corpus.
+    '''
+    frequencies = {}
+    with open('japanese_wikipedia_word_freq.csv', 'r') as f:
+        next(f) # Skip header row.
+        for line in f:
+            rank, word, *rest = line.split(',')
+            frequencies[word] = int(rank)
     return frequencies
 
 
@@ -93,7 +104,7 @@ def plot_jlpt_list_densities(jlpt_levels, word_frequencies):
             for entry_subtype in ['kanji', 'kana']:
                 for item in level_entry[entry_subtype]:
                     if item['text'] in word_frequencies:
-                        frequency_ordinal, _ = word_frequencies[item['text']]
+                        frequency_ordinal = word_frequencies[item['text']]
                         found_data = frequency_ordinal
                         break
                 if found_data is not None:
@@ -121,11 +132,17 @@ def classify():
     print('Getting JLPT levels...')
     jlpt_lists = _get_jlpt_lists(jmdict)
 
-    print('Getting Word Frequencies...')
-    word_frequencies = _get_word_frequencies()
+    print('Getting Novel Word Frequencies...')
+    novel_word_frequencies = _get_cb4960_word_frequencies()
 
-    print('Plotting JLPT histograms...')
-    plot_jlpt_list_densities(jlpt_lists, word_frequencies)
+    print('Plotting Novel JLPT histograms...')
+    plot_jlpt_list_densities(jlpt_lists, novel_word_frequencies)
+
+    #print('Getting Wikipedia Word Frequencies...')
+    #wikipedia_word_frequencies = _get_wikipedia_word_frequencies()
+
+    #print('Plotting Wikipedia JLPT histograms...')
+    #plot_jlpt_list_densities(jlpt_lists, wikipedia_word_frequencies)
 
 
 if __name__ == '__main__':
