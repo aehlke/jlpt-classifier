@@ -1,3 +1,4 @@
+#!python
 import json
 import os
 import zipfile
@@ -29,7 +30,7 @@ def _get_cb4960_word_frequencies():
     Maps word to frequency_ordinal in corpus.
     '''
     frequencies = {}
-    with open('cb4960_novel_word_freq.txt', 'r') as f:
+    with open('cb4960_novel_word_freq.txt', 'r', encoding="utf-8") as f:
         for line_number, line in enumerate(f):
             frequency, word, *rest = line.split('\t')
             frequencies[word] = line_number
@@ -41,7 +42,7 @@ def _get_wikipedia_word_frequencies():
     Maps word to frequency rank in corpus.
     '''
     frequencies = {}
-    with open('japanese_wikipedia_word_freq.csv', 'r') as f:
+    with open('japanese_wikipedia_word_freq.csv', 'r', encoding="utf-8") as f:
         next(f) # Skip header row.
         for line in f:
             rank, word, *rest = line.split(',')
@@ -54,7 +55,7 @@ def _get_vn_word_frequencies():
     Maps word to frequency rank in visual novel corpus.
     '''
     frequencies = {}
-    with open('visual_novel_word_freq.txt', 'r') as f:
+    with open('visual_novel_word_freq.txt', 'r', encoding="utf-8") as f:
         for (line_number, line) in enumerate(f):
             (freq, pos1, pos2, pos3, pos4, reading_spelling, etym, word_class,
              freq_raw, conj, pronunciation, spelling, *rest) = line.split('\t')
@@ -67,7 +68,7 @@ def _get_narou_word_frequencies():
     Maps word to frequency rank in corpus.
     '''
     frequencies = {}
-    with open('narou_word_freq.txt', 'r') as f:
+    with open('narou_word_freq.txt', 'r', encoding="utf-8") as f:
         for (line_number, line) in enumerate(f):
             (freq, pos1, pos2, pos3, pos4, reading_spelling, etym, word_class,
              freq_raw, conj, pronunciation, spelling, *rest) = line.split('\t')
@@ -87,7 +88,7 @@ def _load_jmdict():
         zip_ref = zipfile.ZipFile('build/jmdict_eng.json.zip', 'r')
         zip_ref.extractall('build/')
         zip_ref.close()
-    with open('build/jmdict_eng.json', 'r') as f:
+    with open('build/jmdict_eng.json', 'r', encoding="utf-8") as f:
         jmdict = json.load(f)
     return {entry['id']: entry for entry in jmdict['words']}
 
@@ -98,7 +99,7 @@ def _get_jlpt_lists(jmdict):
     '''
     jlpts = {}
     for level in range(1, 6):
-        with open(f'jlpt-n{level}.csv', 'r') as f:
+        with open(f'jlpt-n{level}.csv', 'r', encoding="utf-8") as f:
             content = f.readlines()
         items = []
         for line in content:
@@ -122,6 +123,7 @@ def plot_jlpt_list_densities(jlpt_levels, word_frequencies):
         subplot.set_ylabel(f'N{level_number}')
         subplot.yaxis.set_visible(False)
         data = set()
+        max_ordinal = 0
         for level_entry in level_entries:
             found_data = None
             for entry_subtype in ['kanji', 'kana']:
@@ -129,6 +131,7 @@ def plot_jlpt_list_densities(jlpt_levels, word_frequencies):
                     if item['text'] in word_frequencies:
                         frequency_ordinal = word_frequencies[item['text']]
                         found_data = frequency_ordinal
+                        max_ordinal = max(frequency_ordinal, max_ordinal)
                         break
                 if found_data is not None:
                     break
@@ -138,7 +141,7 @@ def plot_jlpt_list_densities(jlpt_levels, word_frequencies):
         sorted_data = sorted(list(data))
         n, bins, patches = subplot.hist(
             sorted_data,
-            bins=3000,
+            bins=max_ordinal//66,
             density=True,
             histtype='stepfilled',
             color=JLPT_COLORS[level_number])
@@ -155,20 +158,20 @@ def classify():
     print('Getting JLPT levels...')
     jlpt_lists = _get_jlpt_lists(jmdict)
 
-    #print('Getting Novel Word Frequencies...')
-    #novel_word_frequencies = _get_cb4960_word_frequencies()
-    #print('Plotting Novel JLPT histograms...')
-    #plot_jlpt_list_densities(jlpt_lists, novel_word_frequencies)
+    print('Getting Novel Word Frequencies...')
+    novel_word_frequencies = _get_cb4960_word_frequencies()
+    print('Plotting Novel JLPT histograms...')
+    plot_jlpt_list_densities(jlpt_lists, novel_word_frequencies)
 
     #print('Getting Visual Novels Word Frequencies...')
     #vn_word_frequencies = _get_vn_word_frequencies()
     #print('Plotting Visual Novels JLPT histograms...')
     #plot_jlpt_list_densities(jlpt_lists, vn_word_frequencies)
 
-    print('Getting Narou Word Frequencies...')
-    narou_word_frequencies = _get_narou_word_frequencies()
-    print('Plotting Narou JLPT histograms...')
-    plot_jlpt_list_densities(jlpt_lists, narou_word_frequencies)
+    #print('Getting Narou Word Frequencies...')
+    #narou_word_frequencies = _get_narou_word_frequencies()
+    #print('Plotting Narou JLPT histograms...')
+    #plot_jlpt_list_densities(jlpt_lists, narou_word_frequencies)
 
     # I did not find this Wikipedia word freq list useful.
     #print('Getting Wikipedia Word Frequencies...')
