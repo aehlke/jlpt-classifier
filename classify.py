@@ -41,6 +41,7 @@ SKIP_ENTRY_IDS = {
     2426110, # Fox with supernatural powers
     1241450, # koto (zither)
     1265960, # ancient city
+    1521450, # divining
 }
 SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China,' 'Chinese zodiac)',
@@ -91,7 +92,7 @@ SKIP_WORDS = {
     u'魔王', # Satan
     u'ハート', u'ローズ', u'エル', u'サム', u'ジョー',
     u'イギリス人', u'中国人', u'アメリカ人', u'ユダヤ人', u'フランス人', u'ドイツ人', u'インディアン',
-    u'ドイツ語', u'タイ', u'イタリア人', u'韓国人', u'ロシア人', u'フランス語', u'ラテン語',
+    u'ドイツ語', u'タイ', u'イタリア人', u'韓国人', u'ロシア人', u'フランス語', u'ラテン語', u'日本人',
     u'クリ', u'ペニス', '男根', u'性器', # specific genital
     u'ユリ', u'タラ', u'ケイ',
     u'結界', # temple boundaries
@@ -101,7 +102,7 @@ SKIP_WORDS = {
     u'巫女', # miko
     u'チン',
     u'ジープ', u'バーサーカー',
-    u'特攻', # suicide attack
+    u'特攻', u'心中', u'自殺', # suicide
     u'ヒトラー',
     u'洗礼', # baptism
     u'ゴースト',
@@ -126,7 +127,11 @@ SKIP_WORDS = {
     u'ホワイト', u'マック', u'コマ',
     u'後宮', # inner palace reserved for women
     u'なでしこ', # pink (flower type)
-    u'アオイ', u'真弓', u'真木', u'ポワロ', # random plants
+    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', # random plants
+    u'メイド',
+    u'おいおい',
+    u'ろ',
+    u'そ',
     u'クラスメート',
     u'モビル',
     u'浮気', # extramarital sex
