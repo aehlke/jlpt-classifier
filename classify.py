@@ -42,6 +42,7 @@ SKIP_ENTRY_IDS = {
     1241450, # koto (zither)
     1265960, # ancient city
     1521450, # divining
+    2835604, # fold, gets confused with ore as I
 }
 SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China,' 'Chinese zodiac)',
