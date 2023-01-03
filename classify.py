@@ -34,7 +34,7 @@ SKIP_ENTRY_IDS = {
     2230280, # Qing dynasty
     2246360, 2246380, 2246370, 2247250, 2253330, 2253380, 2253370, 2253360, 2253350, 2253410, 2253420, 2254020, 2254070, 2254060, 2254180, 2254170, 2254160, 2246040, # Chinese dynasties
     1240710, # trees
-    2830349, 1347690, 2581990, 1309710, 1436460, 2830349, 1551110, 1414430, 1522960, 2765940, 1613900, 1390170, 1537500, # unnecessary political/military terms
+    2830349, 1347690, 2581990, 1309710, 1436460, 2830349, 1551110, 1414430, 1522960, 2765940, 1613900, 1390170, 1537500, 1660180, 1413650, 1395070, 1355750, 1248080, 1729190, 1411530, 1390320, # unnecessary political/military terms
     1111490, # Frank in kana
     1984400, # jyan as in Ta-da!
     2524270, # particle koto indicating a command
@@ -45,22 +45,25 @@ SKIP_ENTRY_IDS = {
     2835604, # fold, gets confused with ore as I
 }
 SKIP_GLOSS_SUBSTRINGS = [
-    '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China,' 'Chinese zodiac)',
+    '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China' 'Chinese zodiac)',
     ' shogunate', 'ancient Korean', 'Three Kingdoms period', 'Holy Communion', '(Edo-period',
-    '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ',
+    '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state'
 ]
 SKIP_WORDS = {
     u'モー', u'ジョン', u'ドン', u'メイス', u'スパー', 
     u'隼人', # Hayato people (ancient)
+    u'宋', # Song dynasty
     u'ベラ', # wrase (fish)
     u'ラヴ', # love
-    u'マニラ', u'ロンドン', u'ニューヨーク', # cities outside Japan
+    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', # cities outside Japan
+    u'ビーム',
     u'宦官', # eunuch
     u'エルフ', u'アラン', u'フッ', u'ナン', u'プロレス', u'ヒステリー',
     u'殺人鬼', # bloodthirsty killer
     u'睾丸', # testicles
     u'強姦', # rape
-    u'斬る', # to kill using a blade
+    u'斬る', u'太刀', u'おの', # to kill using a blade; sword terms
+    u'キャスター', u'バーン',
     u'殺意', # intent to kill
     u'爆撃', # bomding (raid)
     u'警視庁', u'警視', u'警部', u'巡査', # metropolitan police dept, other police words
@@ -84,6 +87,7 @@ SKIP_WORDS = {
     u'ねえ', # right?
     u'レ', u'レイ', u'えと', u'クイーン', u'プリンス', u'ワン', u'ロー', u'ジン', u'フランク',
     u'ワイ', u'ニック', u'ムッソリーニ', u'クロス', u'クスクス', u'ウー',
+    u'ボン', # good
     u'ブタ',
     u'茜', # Japanese madder
     u'クララ', # Sophora flavescens
@@ -94,7 +98,7 @@ SKIP_WORDS = {
     u'ハート', u'ローズ', u'エル', u'サム', u'ジョー',
     u'イギリス人', u'中国人', u'アメリカ人', u'ユダヤ人', u'フランス人', u'ドイツ人', u'インディアン',
     u'ドイツ語', u'タイ', u'イタリア人', u'韓国人', u'ロシア人', u'フランス語', u'ラテン語', u'日本人',
-    u'クリ', u'ペニス', '男根', u'性器', # specific genital
+    u'クリ', u'ペニス', '男根', u'性器', u'股間', # specific genital
     u'ユリ', u'タラ', u'ケイ',
     u'結界', # temple boundaries
     u'ドクター',
@@ -103,7 +107,7 @@ SKIP_WORDS = {
     u'巫女', # miko
     u'チン',
     u'ジープ', u'バーサーカー',
-    u'特攻', u'心中', u'自殺', # suicide
+    u'特攻', u'心中', u'自殺', u'遺書', # suicide
     u'ヒトラー',
     u'洗礼', # baptism
     u'ゴースト',
@@ -114,7 +118,9 @@ SKIP_WORDS = {
     u'グラント', u'ブラッド',
     u'生首', # freshly severed head
     u'皆殺し', # massacre
-    u'血だらけ', # covered in blood
+    u'血だらけ', u'血まみれ', # covered in blood
+    u'ブラック',
+    u'アナ',
     u'女体',
     u'ファミリー',
     u'ハーン', # khan
@@ -128,7 +134,10 @@ SKIP_WORDS = {
     u'ホワイト', u'マック', u'コマ',
     u'後宮', # inner palace reserved for women
     u'なでしこ', # pink (flower type)
-    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', # random plants
+    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', u'せり', u'榊', u'芭蕉', u'伊吹', u'藤', u'李', # random plants
+    u'鳳', u'翡翠', # chinese firebird; animals
+    u'ホームズ',
+    u'ハムレット',
     u'メイド',
     u'おいおい',
     u'ろ',
