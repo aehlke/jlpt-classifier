@@ -39,6 +39,8 @@ SKIP_ENTRY_IDS = {
     1984400, # jyan as in Ta-da!
     2524270, # particle koto indicating a command
     2426110, # Fox with supernatural powers
+    1241450, # koto (zither)
+    1265960, # ancient city
 }
 SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China,' 'Chinese zodiac)',
@@ -56,6 +58,9 @@ SKIP_WORDS = {
     u'殺人鬼', # bloodthirsty killer
     u'睾丸', # testicles
     u'強姦', # rape
+    u'斬る', # to kill using a blade
+    u'殺意', # intent to kill
+    u'爆撃', # bomding (raid)
     u'警視庁', u'警視', u'警部', u'巡査', # metropolitan police dept, other police words
     u'マスト', u'スー', u'フェ', u'リック',
     u'矛', # Chinese spear
@@ -145,6 +150,7 @@ SKIP_WORDS = {
     u'ピストル', u'小銃', u'機関銃', u'拳銃', # guns
     u'殺人事件', # murder case
     u'フォン', # phon (unit of loudness)
+    u'ゴシック体', # Gothic typeface (shows up as N4)
 }
 
 def _char_is_kana(c) -> bool:
