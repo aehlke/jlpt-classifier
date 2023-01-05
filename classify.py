@@ -11,9 +11,9 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plot
 import requests
 
-
-JMDICT_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.2.0%2B20230102121435/jmdict-eng-3.2.0+20230102121435.json.zip'
-JMDICT_COMMON_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.2.0%2B20230102121435/jmdict-eng-common-3.2.0+20230102121435.json.zip'
+JMDICT_VERSION = '3.2.1'
+JMDICT_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.2.1%2B20230103160328/jmdict-eng-3.2.1+20230103160328.json.zip'
+JMDICT_COMMON_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.2.1%2B20230103160328/jmdict-eng-common-3.2.1+20230103160328.json.zip'
 JLPT_COLORS = {
     1: '#d84c43',
     2: '#f6934b',
@@ -23,7 +23,7 @@ JLPT_COLORS = {
 }
 
 SKIP_TYPES = {
-    'n-pr', 'arch', 'int', 'biol', 'vulg', 'X', 'rare', 'v2k-k', 'v2g-k', 'v2t-k', 'v2d-k', 'v2h-k', 'v2b-k', 'v2m-k', 'v2y-k', 'v2r-k', 'v2k-s', 'v2g-s', 'v2s-s', 'v2z-s', 'v2t-s', 'v2d-s', 'v2n-s', 'v2h-s', 'v2b-s', 'v2m-s', 'v2y-s', 'v2r-s', 'v2w-s', 'v4k', 'v4g', 'v4s', 'v4t', 'v4n', 'v4b', 'v4m', 'v2a-s', 'v4h', 'v4r', 'kyb', 'osb', 'ksb', 'ktb', 'tsb', 'thb', 'tsug', 'kyu', 'rkb', 'nab', 'hob', 'adj-kari', 'adj-ku', 'adj-shiku', 'adj-nari', 'sens', 'astron', 'baseb', 'archit', 'astron', 'bot', 'geol', 'mahj', 'med', 'music', 'Shinto', 'shogi', 'sumo', 'zool', 'joc', 'Buddh', 'chem', 'oK', 'ok', 'obs', 'obsc', 'oik', 'on-mim', 'pn', 'proverb', 'mil', 'poet', 'physics', 'slang', 'ling', 'geom', 'MA', 'math', 'm-sl', 'col',
+    'n-pr', 'arch', 'int', 'biol', 'vulg', 'X', 'rare', 'v2k-k', 'v2g-k', 'v2t-k', 'v2d-k', 'v2h-k', 'v2b-k', 'v2m-k', 'v2y-k', 'v2r-k', 'v2k-s', 'v2g-s', 'v2s-s', 'v2z-s', 'v2t-s', 'v2d-s', 'v2n-s', 'v2h-s', 'v2b-s', 'v2m-s', 'v2y-s', 'v2r-s', 'v2w-s', 'v4k', 'v4g', 'v4s', 'v4t', 'v4n', 'v4b', 'v4m', 'v2a-s', 'v4h', 'v4r', 'kyb', 'osb', 'ksb', 'ktb', 'tsb', 'thb', 'tsug', 'kyu', 'rkb', 'nab', 'hob', 'adj-kari', 'adj-ku', 'adj-shiku', 'adj-nari', 'sens', 'astron', 'baseb', 'archit', 'astron', 'bot', 'geol', 'mahj', 'med', 'music', 'Shinto', 'shogi', 'sumo', 'zool', 'joc', 'Buddh', 'chem', 'oK', 'ok', 'obs', 'obsc', 'oik', 'on-mim', 'pn', 'proverb', 'mil', 'poet', 'physics', 'slang', 'ling', 'geom', 'MA', 'math', 'm-sl', 'col', 'chn', 'hist',
 }
 SKIP_ENTRIES = {
     u'わけ': [1502990], # skip 'division'
@@ -34,7 +34,8 @@ SKIP_ENTRY_IDS = {
     2230280, # Qing dynasty
     2246360, 2246380, 2246370, 2247250, 2253330, 2253380, 2253370, 2253360, 2253350, 2253410, 2253420, 2254020, 2254070, 2254060, 2254180, 2254170, 2254160, 2246040, # Chinese dynasties
     1240710, # trees
-    2830349, 1347690, 2581990, 1309710, 1436460, 2830349, 1551110, 1414430, 1522960, 2765940, 1613900, 1390170, 1537500, 1660180, 1413650, 1395070, 1355750, 1248080, 1729190, 1411530, 1390320, # unnecessary political/military terms
+    2830349, 1347690, 2581990, 1309710, 1436460, 2830349, 1551110, 1414430, 1522960, 2765940, 1613900, 1390170, 1537500, 1660180, 1413650, 1395070, 1355750, 1248080, 1729190, 1411530, 1390320, 1596740, 1780070, 1623710, 1785770, 1205470, 1273760, 2645860, 1248950, 1853880, 1316480, 1390410, 1517630, 1498730, 1942530, 1762590, 1302580, 1956440, 1221020, 1661100, 1316730, 1933960, 1498430, 1505580, # unnecessary political/military/govt terms
+    1440400, 1042500, 1517200, 1800800, 1345210, 1364860, 1770950, 1940460, 2532610, 1582070, 1042540, # unnecessary religious words
     1111490, # Frank in kana
     1984400, # jyan as in Ta-da!
     2524270, # particle koto indicating a command
@@ -45,29 +46,48 @@ SKIP_ENTRY_IDS = {
     2835604, # fold, gets confused with ore as I
 }
 SKIP_GLOSS_SUBSTRINGS = [
-    '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China' 'Chinese zodiac)',
-    ' shogunate', 'ancient Korean', 'Three Kingdoms period', 'Holy Communion', '(Edo-period',
-    '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state'
+    '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China', 'Chinese zodiac)',
+    ' shogunate', 'ancient Korean', 'Three Kingdoms period', 'Holy Communion', '(Edo-period', '(Edo period',
+    '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state', '(Japanese history', 'historical Japanese', 'the Edo period', '(region)',
 ]
 SKIP_WORDS = {
     u'モー', u'ジョン', u'ドン', u'メイス', u'スパー', 
     u'隼人', # Hayato people (ancient)
-    u'宋', # Song dynasty
+    u'宋', u'清国', # Song dynasty, other China dynasty words
     u'ベラ', # wrase (fish)
     u'ラヴ', # love
-    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', # cities outside Japan
-    u'ビーム',
+    u'ラスト', u'ヘッド', u'シティ', u'フル', u'スポンサー', u'プロセス', u'スリー', u'ビルマ', u'ロング',
+    u'サリー', # saree
+    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', # cities/areas outside Japan
+    u'スタン', # stun
+    u'ナチス',
+    u'ウルフ', # wolf
+    u'ビーム', u'エッセイ', u'パック', u'ホーン', u'ハント', u'オー', u'ディス', u'ベイ',
+    u'ショート',
+    u'ロ', # iroha poem system, and music term.
+    u'尺', # shaku unit of distance
+    u'レス', # respond (abbr)
+    u'シート', u'ヒル', u'ビュー', u'ノブ', u'ジャングル',
+    u'庵', # hermitage
+    u'ピアニスト',
+    u'ターゲット',
+    u'ボストンバッグ',
     u'宦官', # eunuch
-    u'エルフ', u'アラン', u'フッ', u'ナン', u'プロレス', u'ヒステリー',
+    u'エルフ', u'アラン', u'フッ', u'ナン', u'プロレス', u'ヒステリー', u'ステラ', u'フレンチ',
     u'殺人鬼', # bloodthirsty killer
+    u'マジック',
+    u'平家', # historical term
     u'睾丸', # testicles
     u'強姦', # rape
-    u'斬る', u'太刀', u'おの', # to kill using a blade; sword terms
+    u'斬る', u'太刀', u'おの', u'ドス', u'脇差', # to kill using a blade; sword terms
     u'キャスター', u'バーン',
     u'殺意', # intent to kill
+    u'宮城', # imperial palace esp. from 1888-1946
     u'爆撃', # bomding (raid)
+    u'琵琶', # biwa (lute)
     u'警視庁', u'警視', u'警部', u'巡査', # metropolitan police dept, other police words
-    u'マスト', u'スー', u'フェ', u'リック',
+    u'マスト', u'スー', u'フェ', u'リック', u'ビスケット',
+    u'ジプシー',
     u'矛', # Chinese spear
     u'ディレクター', u'エース', u'トー', u'ゴー', u'ブラジャー', u'グリフィン',
     u'プライベート', u'ブルック', u'ヒロイン', u'クラフト', u'ベンツ', u'ブラウン',
@@ -77,16 +97,22 @@ SKIP_WORDS = {
     u'連隊長', # regimental commander
     u'兵法', # art of war
     u'裁判長', # presiding judge
+    u'クソ',
+    u'マフィア',
     u'水割り', # cutting alcohol
     u'日露戦争', # Russo-Japanese War
+    u'マール', # volcano crater
+    u'征伐', # conquest
     u'べ',
+    u'厚子', # ainu elm bark clothes
     u'ぬ',
     u'お',
     u'う',
     u'しれる', # to become known
     u'ねえ', # right?
     u'レ', u'レイ', u'えと', u'クイーン', u'プリンス', u'ワン', u'ロー', u'ジン', u'フランク',
-    u'ワイ', u'ニック', u'ムッソリーニ', u'クロス', u'クスクス', u'ウー',
+    u'ワイ', u'ニック', u'ムッソリーニ', u'クロス', u'クスクス', u'ウー', u'スケッチ',
+    u'ブス',
     u'ボン', # good
     u'ブタ',
     u'茜', # Japanese madder
@@ -101,7 +127,7 @@ SKIP_WORDS = {
     u'クリ', u'ペニス', '男根', u'性器', u'股間', # specific genital
     u'ユリ', u'タラ', u'ケイ',
     u'結界', # temple boundaries
-    u'ドクター',
+    u'ドクター', u'エリア',
     u'ライフル',
     u'コル',
     u'巫女', # miko
@@ -118,13 +144,14 @@ SKIP_WORDS = {
     u'グラント', u'ブラッド',
     u'生首', # freshly severed head
     u'皆殺し', # massacre
-    u'血だらけ', u'血まみれ', # covered in blood
+    u'血だらけ', u'血まみれ', u'致命傷', # covered in blood; wounds
     u'ブラック',
     u'アナ',
     u'女体',
     u'ファミリー',
     u'ハーン', # khan
     u'パンティ',
+    u'ワゴン',
     u'二ノ宮', # 2nd most important imperial shrine
     u'ウエスト', u'ダリア', u'マシーン', u'クリア', u'カイロ', u'フラ', u'ダッシュ',
     u'カイ', # chi (greek)
@@ -134,7 +161,12 @@ SKIP_WORDS = {
     u'ホワイト', u'マック', u'コマ',
     u'後宮', # inner palace reserved for women
     u'なでしこ', # pink (flower type)
-    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', u'せり', u'榊', u'芭蕉', u'伊吹', u'藤', u'李', # random plants
+    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', u'せり', u'榊', u'芭蕉', u'伊吹', u'藤', u'李', u'カシュー', u'桔梗', u'青柳', u'メリッサ', u'正木', u'萩', u'鳶', u'葛', u'狸', u'蔦', u'山吹', u'ゆり', # random plants
+    u'コーン', # cone
+    u'ディン', u'ジェイ', u'ミスター', u'パ', u'マス', u'トラップ',
+    u'越', # ancient china kingdom, abbreviation for vietnam
+    u'シェル', # unix shell
+    u'ホ', u'リム', u'ゴブリン', u'ショット',
     u'鳳', u'翡翠', # chinese firebird; animals
     u'ホームズ',
     u'ハムレット',
@@ -147,7 +179,7 @@ SKIP_WORDS = {
     u'浮気', # extramarital sex
     u'ぢ', # hemorrhoids
     u'レオ',
-    u'セックス',
+    u'セックス', u'性欲', u'エロ',
     u'地蔵', # buddhist word
     u'糞', # kuso
     u'ヨ',
@@ -158,13 +190,17 @@ SKIP_WORDS = {
     u'律', # ancient east asian law
     u'ダンブル', # ship's hold
     u'アッラー', # allah
+    u'ホントに',
+    u'怨霊', # revengeful ghost
+    u'殺し屋', # pro killer
+    u'殺人犯', # murderer
     u'フォード', u'マリア',
     u'レイン',
-    u'ゝ', # repetition mark
+    u'ゝ', u'ゞ', u'ヽ', # repetition mark
     u'男爵', # baron
     u'ピストル', u'小銃', u'機関銃', u'拳銃', # guns
     u'殺人事件', # murder case
-    u'フォン', # phon (unit of loudness)
+    u'フォン', u'ホン', # phon (unit of loudness)
     u'ゴシック体', # Gothic typeface (shows up as N4)
 }
 
@@ -234,7 +270,7 @@ def _load_jmdict():
     '''
     Maps JMDict ID to JMDict entry.
     '''
-    if not os.path.exists('build/jmdict-eng-3.2.0.json'):
+    if not os.path.exists(f'build/jmdict-eng-{JMDICT_VERSION}.json'):
         r = requests.get(JMDICT_JSON_URL, stream=True)
         r.raise_for_status()
         with open('build/jmdict_eng.json.zip', 'wb') as f:
@@ -242,7 +278,7 @@ def _load_jmdict():
         zip_ref = zipfile.ZipFile('build/jmdict_eng.json.zip', 'r')
         zip_ref.extractall('build/')
         zip_ref.close()
-    with open('build/jmdict-eng-3.2.0.json', 'r', encoding="utf-8") as f:
+    with open(f'build/jmdict-eng-{JMDICT_VERSION}.json', 'r', encoding="utf-8") as f:
         jmdict = json.load(f)
     return {int(entry['id']): entry for entry in jmdict['words']}
 
@@ -251,7 +287,7 @@ def _load_jmdict_common():
     '''
     Maps JMDict ID to JMDict entry.
     '''
-    if not os.path.exists('build/jmdict-eng-common-3.2.0.json'):
+    if not os.path.exists(f'build/jmdict-eng-common-{JMDICT_VERSION}.json'):
         r = requests.get(JMDICT_COMMON_JSON_URL, stream=True)
         r.raise_for_status()
         with open('build/jmdict_eng_common.json.zip', 'wb') as f:
@@ -259,7 +295,7 @@ def _load_jmdict_common():
         zip_ref = zipfile.ZipFile('build/jmdict_eng_common.json.zip', 'r')
         zip_ref.extractall('build/')
         zip_ref.close()
-    with open('build/jmdict-eng-common-3.2.0.json', 'r', encoding="utf-8") as f:
+    with open(f'build/jmdict-eng-common-{JMDICT_VERSION}.json', 'r', encoding="utf-8") as f:
         jmdict = json.load(f)
     return {int(entry['id']): entry for entry in jmdict['words']}
 
@@ -323,6 +359,8 @@ def write_jlpt_levels(jmdict, jmdict_common, jlpt_levels, word_frequencies):
                         continue
 
                     for jme in all_jmes:
+                        # TODO: It should iterate over candidate senses and reject in turn if any fail,
+                        # instead of approving each qualification independently.
                         if int(jme['id']) in SKIP_ENTRIES.get(word, []) or int(jme['id']) in SKIP_ENTRY_IDS:
                             continue
 
@@ -346,6 +384,13 @@ def write_jlpt_levels(jmdict, jmdict_common, jlpt_levels, word_frequencies):
                             if all(t not in field for t in SKIP_TYPES):
                                 ok_field = True
                         if not ok_field:
+                            continue
+
+                        ok_misc = False
+                        for misc in [e['misc'] for e in jme['sense']]:
+                            if all(t not in misc for t in SKIP_TYPES):
+                                ok_misc = True
+                        if not ok_misc:
                             continue
 
                         if word in [e['text'] for e in jme['kanji'] if not {t for t in e['tags']}.intersection(SKIP_TYPES)] or word in [e['text'] for e in jme['kana'] if not {t for t in e['tags']}.intersection(SKIP_TYPES)]:
