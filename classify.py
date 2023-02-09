@@ -188,6 +188,9 @@ SKIP_WORDS = {
     u'鳳', u'翡翠', # chinese firebird; animals
     u'ホームズ',
     u'ハムレット',
+    u'マン', #  man
+    u'キリスト教徒', # Christian
+    u'キリスト教', # Christianity
     u'メイド',
     u'おいおい',
     u'ろ',
@@ -427,10 +430,14 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
             for entry in level_entries:
                 print(f"N{level_number} {entry['id']} {entry['kanji'][0] if entry['kanji'] else entry['kana'][0]} {entry['sense'][0]['gloss'][0]['text']}")
                 f.write(f"{entry['id']}\n")
-                for kana in entry['kana']:
-                    used_words.add(kana['text'])
+                if 'uk' in entry['misc'] or not entry['kanji']:
+                    for kana in entry['kana']:
+                        used_words.add(kana['text'])
                 for kanji in entry['kanji']:
                     used_words.add(kanji['text'])
+                for sense in entry['sense']:
+                    for related in sense['related']:
+                        used_words.add(related[0])
             offset += len(level_entries)
             remaining = vocab_counts[level_number] - offset
 
@@ -448,6 +455,15 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
                     f.write(f"{found_data['id']}\n")
                     offset += 1
                     remaining -= 1
+                    
+                    for kanji in found_data['kanji']:
+                        used_words.add(kanji['text'])
+                    if 'uk' in found_data['misc'] or not found_data['kanji']:
+                        for kana in found_data['kana']:
+                            used_words.add(kana['text'])
+                    for sense in found_data['sense']:
+                        for related in sense['related']:
+                            used_words.add(related[0])
                 else:
                     print(f"Skipping {word}")
 
