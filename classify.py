@@ -24,6 +24,7 @@ SKIP_TYPES = {
 }
 SKIP_ENTRIES = {
     u'わけ': [1502990], # skip 'division'
+    u'たち': [1408340], # skip 'long sword'
 }
 SKIP_ENTRY_IDS = {
     2014450, # Saint
