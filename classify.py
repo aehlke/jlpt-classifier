@@ -369,8 +369,12 @@ def match_word(word, all_jmes):
 
             ok_pos = False
             for pos in [e['partOfSpeech'] for e in jme['sense']]:
-                if not set(pos).intersection(SKIP_TYPES):
-                    ok_pos = True
+                if ok_pos:
+                    break
+                for single_pos in pos:
+                    if single_pos not in SKIP_TYPES:
+                        ok_pos = True
+                        break
             if not ok_pos:
                 continue
 
