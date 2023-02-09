@@ -4,16 +4,13 @@ import json
 from functools import reduce
 import os
 import zipfile
+import sys
 
-# https://stackoverflow.com/a/48374671/89373
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plot
 import requests
 
-JMDICT_VERSION = '3.2.1'
-JMDICT_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.2.1%2B20230103160328/jmdict-eng-3.2.1+20230103160328.json.zip'
-JMDICT_COMMON_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.2.1%2B20230103160328/jmdict-eng-common-3.2.1+20230103160328.json.zip'
+JMDICT_VERSION = '3.3.1'
+JMDICT_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.3.1%2B20230206121907/jmdict-eng-3.3.1+20230206121907.json.zip'
+JMDICT_COMMON_JSON_URL = 'https://github.com/scriptin/jmdict-simplified/releases/download/3.3.1%2B20230206121907/jmdict-eng-common-3.3.1+20230206121907.json.zip'
 JLPT_COLORS = {
     1: '#d84c43',
     2: '#f6934b',
@@ -23,7 +20,7 @@ JLPT_COLORS = {
 }
 
 SKIP_TYPES = {
-    'n-pr', 'arch', 'int', 'biol', 'vulg', 'X', 'rare', 'v2k-k', 'v2g-k', 'v2t-k', 'v2d-k', 'v2h-k', 'v2b-k', 'v2m-k', 'v2y-k', 'v2r-k', 'v2k-s', 'v2g-s', 'v2s-s', 'v2z-s', 'v2t-s', 'v2d-s', 'v2n-s', 'v2h-s', 'v2b-s', 'v2m-s', 'v2y-s', 'v2r-s', 'v2w-s', 'v4k', 'v4g', 'v4s', 'v4t', 'v4n', 'v4b', 'v4m', 'v2a-s', 'v4h', 'v4r', 'kyb', 'osb', 'ksb', 'ktb', 'tsb', 'thb', 'tsug', 'kyu', 'rkb', 'nab', 'hob', 'adj-kari', 'adj-ku', 'adj-shiku', 'adj-nari', 'sens', 'astron', 'baseb', 'archit', 'astron', 'bot', 'geol', 'mahj', 'med', 'music', 'Shinto', 'shogi', 'sumo', 'zool', 'joc', 'Buddh', 'chem', 'oK', 'ok', 'obs', 'obsc', 'oik', 'on-mim', 'pn', 'proverb', 'mil', 'poet', 'physics', 'slang', 'ling', 'geom', 'MA', 'math', 'm-sl', 'col', 'chn', 'hist',
+    'n-pr', 'arch', 'int', 'biol', 'vulg', 'X', 'rare', 'v2k-k', 'v2g-k', 'v2t-k', 'v2d-k', 'v2h-k', 'v2b-k', 'v2m-k', 'v2y-k', 'v2r-k', 'v2k-s', 'v2g-s', 'v2s-s', 'v2z-s', 'v2t-s', 'v2d-s', 'v2n-s', 'v2h-s', 'v2b-s', 'v2m-s', 'v2y-s', 'v2r-s', 'v2w-s', 'v4k', 'v4g', 'v4s', 'v4t', 'v4n', 'v4b', 'v4m', 'v2a-s', 'v4h', 'v4r', 'kyb', 'osb', 'ksb', 'ktb', 'tsb', 'thb', 'tsug', 'kyu', 'rkb', 'nab', 'hob', 'adj-kari', 'adj-ku', 'adj-shiku', 'adj-nari', 'sens', 'astron', 'baseb', 'archit', 'astron', 'bot', 'geol', 'mahj', 'med', 'music', 'Shinto', 'shogi', 'sumo', 'zool', 'joc', 'Buddh', 'chem', 'oK', 'ok', 'obs', 'obsc', 'oik', 'on-mim', 'proverb', 'mil', 'poet', 'physics', 'slang', 'ling', 'geom', 'MA', 'math', 'm-sl', 'col', 'chn', 'hist',
 }
 SKIP_ENTRIES = {
     u'わけ': [1502990], # skip 'division'
@@ -35,6 +32,8 @@ SKIP_ENTRY_IDS = {
     2246360, 2246380, 2246370, 2247250, 2253330, 2253380, 2253370, 2253360, 2253350, 2253410, 2253420, 2254020, 2254070, 2254060, 2254180, 2254170, 2254160, 2246040, # Chinese dynasties
     1240710, # trees
     2830349, 1347690, 2581990, 1309710, 1436460, 2830349, 1551110, 1414430, 1522960, 2765940, 1613900, 1390170, 1537500, 1660180, 1413650, 1395070, 1355750, 1248080, 1729190, 1411530, 1390320, 1596740, 1780070, 1623710, 1785770, 1205470, 1273760, 2645860, 1248950, 1853880, 1316480, 1390410, 1517630, 1498730, 1942530, 1762590, 1302580, 1956440, 1221020, 1661100, 1316730, 1933960, 1498430, 1505580, # unnecessary political/military/govt terms
+    1322180, # unnecessary violence
+    1486490, # unnecessary sexualization
     1440400, 1042500, 1517200, 1800800, 1345210, 1364860, 1770950, 1940460, 2532610, 1582070, 1042540, # unnecessary religious words
     1111490, # Frank in kana
     1984400, # jyan as in Ta-da!
@@ -44,11 +43,12 @@ SKIP_ENTRY_IDS = {
     1265960, # ancient city
     1521450, # divining
     2835604, # fold, gets confused with ore as I
+    1550770, # historical term ("Japanese league")
 }
 SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China', 'Chinese zodiac)',
     ' shogunate', 'ancient Korean', 'Three Kingdoms period', 'Holy Communion', '(Edo-period', '(Edo period',
-    '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state', '(Japanese history', 'historical Japanese', 'the Edo period', '(region)',
+    '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state', '(Japanese history', 'historical Japanese', 'the Edo period', '(region)', 'warship', ' noh ',
 ]
 SKIP_WORDS = {
     u'モー', u'ジョン', u'ドン', u'メイス', u'スパー', 
@@ -56,10 +56,14 @@ SKIP_WORDS = {
     u'宋', u'清国', # Song dynasty, other China dynasty words
     u'ベラ', # wrase (fish)
     u'ラヴ', # love
+    u'ショート', # short
     u'ラスト', u'ヘッド', u'シティ', u'フル', u'スポンサー', u'プロセス', u'スリー', u'ビルマ', u'ロング',
     u'サリー', # saree
-    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', # cities/areas outside Japan
+    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', u'シカゴ', # cities/areas outside Japan
     u'スタン', # stun
+    u'リン', # ring or name?
+    u'リリー', # lily
+    u'てる', # teiru but finds weird matches, colloquialism
     u'ナチス',
     u'ウルフ', # wolf
     u'ビーム', u'エッセイ', u'パック', u'ホーン', u'ハント', u'オー', u'ディス', u'ベイ',
@@ -119,9 +123,14 @@ SKIP_WORDS = {
     u'クララ', # Sophora flavescens
     u'オレンジ色',
     u'本陣', # troop HQ
+    u'領主', # feudal lord
+    u'旗本', # shogunal vassal
+    u'エスパー', # ESPer
+    u'ヒーロー', # hero
     u'オール', u'ハッチ',
     u'魔王', # Satan
-    u'ハート', u'ローズ', u'エル', u'サム', u'ジョー',
+    u'ハート', u'ローズ', u'エル', u'サム', u'ジョー', u'マーク', u'フィリップ',
+    u'ハード',
     u'イギリス人', u'中国人', u'アメリカ人', u'ユダヤ人', u'フランス人', u'ドイツ人', u'インディアン',
     u'ドイツ語', u'タイ', u'イタリア人', u'韓国人', u'ロシア人', u'フランス語', u'ラテン語', u'日本人',
     u'クリ', u'ペニス', '男根', u'性器', u'股間', # specific genital
@@ -133,8 +142,9 @@ SKIP_WORDS = {
     u'巫女', # miko
     u'チン',
     u'ジープ', u'バーサーカー',
-    u'特攻', u'心中', u'自殺', u'遺書', # suicide
+    u'特攻', u'心中', u'自殺', u'遺書', u'切腹', # suicide
     u'ヒトラー',
+    u'チビ', # "small child"
     u'洗礼', # baptism
     u'ゴースト',
     u'拍車', # riding spur
@@ -161,11 +171,19 @@ SKIP_WORDS = {
     u'ホワイト', u'マック', u'コマ',
     u'後宮', # inner palace reserved for women
     u'なでしこ', # pink (flower type)
-    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', u'せり', u'榊', u'芭蕉', u'伊吹', u'藤', u'李', u'カシュー', u'桔梗', u'青柳', u'メリッサ', u'正木', u'萩', u'鳶', u'葛', u'狸', u'蔦', u'山吹', u'ゆり', # random plants
+    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', u'せり', u'榊', u'芭蕉', u'伊吹', u'藤', u'李', u'カシュー', u'桔梗', u'青柳', u'メリッサ', u'正木', u'萩', u'鳶', u'葛', u'狸', u'蔦', u'山吹', u'ゆり', u'郁子', u'山吹', # random plants
+    u'キャバレー', # cabaret
+    u'剣客', # master swordsman
     u'コーン', # cone
-    u'ディン', u'ジェイ', u'ミスター', u'パ', u'マス', u'トラップ',
+    u'ディン', u'ジェイ', u'ミスター', u'パ', u'マス', u'トラップ', u'ジェイ',
     u'越', # ancient china kingdom, abbreviation for vietnam
+    u'フィート', u'キリスト教',
+    u'旗本', # shogunal vassal
+    u'家臣', # vassal
+    u'ん', # yes
     u'シェル', # unix shell
+    u'ン', u'あら',
+    u'わし', # old timer contraction of watashi I think, from old books maybe
     u'ホ', u'リム', u'ゴブリン', u'ショット',
     u'鳳', u'翡翠', # chinese firebird; animals
     u'ホームズ',
@@ -204,11 +222,26 @@ SKIP_WORDS = {
     u'ゴシック体', # Gothic typeface (shows up as N4)
 }
 
+
+def _char_is_cjk(character):
+    return any([start <= ord(character) <= end for start, end in 
+                [(4352, 4607), (11904, 42191), (43072, 43135), (44032, 55215), 
+                 (63744, 64255), (65072, 65103), (65381, 65500), 
+                 (131072, 196607)]
+                ])
+
+
+def _is_cjk(s: str) -> bool:
+    return all(_char_is_cjk(c) for c in s)
+
+
 def _char_is_kana(c) -> bool:
     return (u'\u3040' <= c <= u'\u309F') or (u'\u30A0' <= c <= u'\u30FF')
 
+
 def _is_kana(s: str) -> bool:
     return all(_char_is_kana(c) for c in s)
+
 
 def _make_build_dir():
     if not os.path.exists('build'):
@@ -320,7 +353,60 @@ def _get_jlpt_lists(jmdict):
     return jlpts
 
 
-def write_jlpt_levels(jmdict, jmdict_common, jlpt_levels, word_frequencies):
+def match_word(word, all_jmes):
+    found_data = None
+    for kana_only in [True, False]:
+        if found_data is not None:
+            continue
+        if kana_only and not _is_kana(word):
+            continue
+
+        for jme in all_jmes:
+            # TODO: It should iterate over candidate senses and reject in turn if any fail,
+            # instead of approving each qualification independently.
+            if int(jme['id']) in SKIP_ENTRIES.get(word, []) or int(jme['id']) in SKIP_ENTRY_IDS:
+                continue
+
+            ok_pos = False
+            for pos in [e['partOfSpeech'] for e in jme['sense']]:
+                if not set(pos).intersection(SKIP_TYPES):
+                    ok_pos = True
+            if not ok_pos:
+                continue
+
+            ok_gloss = False
+            for gloss in [e['gloss'] for e in jme['sense']]:
+                for gloss_text in [g['text'] for g in gloss]:
+                    if all(t not in gloss_text for t in SKIP_GLOSS_SUBSTRINGS):
+                        ok_gloss = True
+            if not ok_gloss:
+                continue
+
+            ok_field = False
+            for field in [e['field'] for e in jme['sense']]:
+                if all(t not in field for t in SKIP_TYPES):
+                    ok_field = True
+            if not ok_field:
+                continue
+
+            ok_misc = False
+            for misc in [e['misc'] for e in jme['sense']]:
+                if all(t not in misc for t in SKIP_TYPES):
+                    ok_misc = True
+            if not ok_misc:
+                continue
+
+            if word in [e['text'] for e in jme['kanji'] if not {t for t in e['tags']}.intersection(SKIP_TYPES)] or word in [e['text'] for e in jme['kana'] if not {t for t in e['tags']}.intersection(SKIP_TYPES)]:
+                if kana_only and len(jme['kanji']) > 0:
+                    continue
+                if len(jme['kanji']) > 0 and not _is_cjk(jme['kanji'][0]['text']):
+                    continue
+                found_data = jme
+                break
+    return found_data
+
+
+def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
     vocab_counts = {
         5: 800,
         4: 1500,
@@ -331,12 +417,11 @@ def write_jlpt_levels(jmdict, jmdict_common, jlpt_levels, word_frequencies):
     words = [e[0] for e in sorted(word_frequencies.items(), key=lambda x: x[1])]
     used_words = set()
 
-    all_jmes = list(jmdict_common.values()) + list(jmdict.values())
-
     for (level_number, level_entries) in sorted(jlpt_levels.items(), key=lambda x: -x[0]):
         offset = 0
         with open(f'build/jlpt-n{level_number}.txt', 'w', encoding="utf-8") as f:
             for entry in level_entries:
+                print(f"N{level_number} {entry['id']} {entry['kanji'][0] if entry['kanji'] else entry['kana'][0]} {entry['sense'][0]['gloss'][0]['text']}")
                 f.write(f"{entry['id']}\n")
                 for kana in entry['kana']:
                     used_words.add(kana['text'])
@@ -351,53 +436,7 @@ def write_jlpt_levels(jmdict, jmdict_common, jlpt_levels, word_frequencies):
                 if word in used_words:
                     continue
 
-                found_data = None
-                for kana_only in [True, False]:
-                    if found_data is not None:
-                        continue
-                    if kana_only and not _is_kana(word):
-                        continue
-
-                    for jme in all_jmes:
-                        # TODO: It should iterate over candidate senses and reject in turn if any fail,
-                        # instead of approving each qualification independently.
-                        if int(jme['id']) in SKIP_ENTRIES.get(word, []) or int(jme['id']) in SKIP_ENTRY_IDS:
-                            continue
-
-                        ok_pos = False
-                        for pos in [e['partOfSpeech'] for e in jme['sense']]:
-                            if not set(pos).intersection(SKIP_TYPES):
-                                ok_pos = True
-                        if not ok_pos:
-                            continue
-
-                        ok_gloss = False
-                        for gloss in [e['gloss'] for e in jme['sense']]:
-                            for gloss_text in [g['text'] for g in gloss]:
-                                if all(t not in gloss_text for t in SKIP_GLOSS_SUBSTRINGS):
-                                    ok_gloss = True
-                        if not ok_gloss:
-                            continue
-
-                        ok_field = False
-                        for field in [e['field'] for e in jme['sense']]:
-                            if all(t not in field for t in SKIP_TYPES):
-                                ok_field = True
-                        if not ok_field:
-                            continue
-
-                        ok_misc = False
-                        for misc in [e['misc'] for e in jme['sense']]:
-                            if all(t not in misc for t in SKIP_TYPES):
-                                ok_misc = True
-                        if not ok_misc:
-                            continue
-
-                        if word in [e['text'] for e in jme['kanji'] if not {t for t in e['tags']}.intersection(SKIP_TYPES)] or word in [e['text'] for e in jme['kana'] if not {t for t in e['tags']}.intersection(SKIP_TYPES)]:
-                            if kana_only and len(jme['kanji']) > 0:
-                                continue
-                            found_data = jme
-                            break
+                found_data = match_word(word, all_jmes)
 
                 if found_data is not None:
                     print(f"N{level_number} {found_data['id']} {word} {found_data['sense'][0]['gloss'][0]['text']}")
@@ -414,6 +453,11 @@ def write_jlpt_levels(jmdict, jmdict_common, jlpt_levels, word_frequencies):
 
 
 def plot_jlpt_list_densities(jlpt_levels, word_frequencies):
+    # https://stackoverflow.com/a/48374671/89373
+    import matplotlib
+    matplotlib.use('TkAgg')
+    import matplotlib.pyplot as plot
+
     fig, ax = plot.subplots(5, sharex=True)
     ax[0].set_title(
         f'Histogram of JLPT Levels Mapped to Word Frequency List')
@@ -449,22 +493,28 @@ def plot_jlpt_list_densities(jlpt_levels, word_frequencies):
     plot.show()
 
 
-def classify():
+def classify(search=None):
     _make_build_dir()
 
     print('Loading JMDict...')
     jmdict = _load_jmdict()
     jmdict_common = _load_jmdict_common()
+    all_jmes = list(jmdict_common.values()) + list(jmdict.values())
 
     print('Getting JLPT levels...')
     jlpt_lists = _get_jlpt_lists(jmdict)
 
     print('Getting Novel Word Frequencies...')
     novel_word_frequencies = _get_cb4960_word_frequencies()
-    print('Writing JLPT levels per Novel Word Frequencies...')
-    write_jlpt_levels(jmdict, jmdict_common, jlpt_lists, novel_word_frequencies)
-    print('Plotting Novel JLPT histograms...')
-    plot_jlpt_list_densities(jlpt_lists, novel_word_frequencies)
+    if search is None:
+        print('Writing JLPT levels per Novel Word Frequencies...')
+        write_jlpt_levels(all_jmes, jlpt_lists, novel_word_frequencies)
+    else:
+        return match_word(search, all_jmes)
+    if search is not None:
+        return search_match
+    #print('Plotting Novel JLPT histograms...')
+    #plot_jlpt_list_densities(jlpt_lists, novel_word_frequencies)
 
     #print('Getting Visual Novels Word Frequencies...')
     #vn_word_frequencies = _get_vn_word_frequencies()
@@ -484,4 +534,12 @@ def classify():
 
 
 if __name__ == '__main__':
-    classify()
+    if len(sys.argv) == 2:
+        search = sys.argv[1]
+        match = classify(search=search)
+        if match is None:
+            print("No match")
+        else:
+            print(f"{match['id']} {match['sense'][0]['gloss'][0]['text']}")
+    else:
+        classify()
