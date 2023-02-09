@@ -430,7 +430,7 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
             for entry in level_entries:
                 print(f"N{level_number} {entry['id']} {entry['kanji'][0] if entry['kanji'] else entry['kana'][0]} {entry['sense'][0]['gloss'][0]['text']}")
                 f.write(f"{entry['id']}\n")
-                if 'uk' in entry['misc'] or not entry['kanji']:
+                if 'uk' in [s['misc'] for s in entry['sense']] or not entry['kanji']:
                     for kana in entry['kana']:
                         used_words.add(kana['text'])
                 for kanji in entry['kanji']:
@@ -458,7 +458,7 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
                     
                     for kanji in found_data['kanji']:
                         used_words.add(kanji['text'])
-                    if 'uk' in found_data['misc'] or not found_data['kanji']:
+                    if 'uk' in [s['misc'] for s in found_data['sense']] or not found_data['kanji']:
                         for kana in found_data['kana']:
                             used_words.add(kana['text'])
                     for sense in found_data['sense']:
