@@ -53,6 +53,7 @@ SKIP_GLOSS_SUBSTRINGS = [
 SKIP_WORDS = {
     u'た', # did
     u'て', # you said
+    u'いく', # some
     u'モー', u'ジョン', u'ドン', u'メイス', u'スパー', 
     u'隼人', # Hayato people (ancient)
     u'宋', u'清国', # Song dynasty, other China dynasty words
