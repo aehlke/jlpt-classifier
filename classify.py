@@ -25,6 +25,8 @@ SKIP_TYPES = {
 SKIP_ENTRIES = {
     u'わけ': [1502990], # skip 'division'
     u'たち': [1408340], # skip 'long sword'
+    u'よし': [1152820], # reed
+    u'がたい': [2079640, 2676050], # body build, blastema
 }
 SKIP_ENTRY_IDS = {
     2014450, # Saint
@@ -51,7 +53,7 @@ SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China', 'Chinese zodiac)',
     ' shogunate', 'ancient Korean', 'Three Kingdoms period', 'Holy Communion', '(Edo-period', '(Edo period',
     '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state', '(Japanese history', 'historical Japanese', 'the Edo period', '(region)', 'warship', ' noh ',
-]
+ ' constellation ',]
 SKIP_WORDS = {
     u'た', # did
     u'て', # you said
@@ -136,6 +138,8 @@ SKIP_WORDS = {
     u'魔王', # Satan
     u'ハート', u'ローズ', u'エル', u'サム', u'ジョー', u'マーク', u'フィリップ',
     u'ハード',
+    u'花鶏', # brambling (bird)
+    u'ですが', # but
     u'イギリス人', u'中国人', u'アメリカ人', u'ユダヤ人', u'フランス人', u'ドイツ人', u'インディアン',
     u'ドイツ語', u'タイ', u'イタリア人', u'韓国人', u'ロシア人', u'フランス語', u'ラテン語', u'日本人',
     u'クリ', u'ペニス', '男根', u'性器', u'股間', # specific genital
@@ -227,7 +231,9 @@ SKIP_WORDS = {
     u'ピストル', u'小銃', u'機関銃', u'拳銃', # guns
     u'殺人事件', # murder case
     u'フォン', u'ホン', # phon (unit of loudness)
+    u'きく', # covered already by 聞く in JLPT list
     u'ゴシック体', # Gothic typeface (shows up as N4)
+    u'がたい', # jmdict matches to other words, not the grammar construct bc nikui matches separately
 }
 
 
@@ -438,7 +444,7 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
                 f.write(f"{entry['id']}\n")
                 used_ids.add(int(entry['id']))
                 # TODO: this kana dedupe could be improved
-                if 'uk' in [s['misc'] for s in entry['sense']] or any(kana['common'] for kana in entry['kana']) or not entry['kanji']:
+                if any('uk' in s['misc'] for s in entry['sense']) or any(kana['common'] for kana in entry['kana']) or not entry['kanji']:
                     for kana in entry['kana']:
                         used_words.add(kana['text'])
                 for kanji in entry['kanji']:
@@ -467,7 +473,8 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
                     used_ids.add(int(found_data['id']))
                     for kanji in found_data['kanji']:
                         used_words.add(kanji['text'])
-                    if 'uk' in [s['misc'] for s in found_data['sense']] or not found_data['kanji']:
+                    used_words.add(word)
+                    if any('uk' in s['misc'] for s in found_data['sense']) or any(kana['common'] for kana in found_data['kana']) or not found_data['kanji']:
                         for kana in found_data['kana']:
                             used_words.add(kana['text'])
                     for sense in found_data['sense']:
