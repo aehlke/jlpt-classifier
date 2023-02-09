@@ -45,6 +45,7 @@ SKIP_ENTRY_IDS = {
     1521450, # divining
     2835604, # fold, gets confused with ore as I
     1550770, # historical term ("Japanese league")
+    1267460, # groin ("mata")
 }
 SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China', 'Chinese zodiac)',
@@ -360,7 +361,7 @@ def _get_jlpt_lists(jmdict):
     return jlpts
 
 
-def match_word(word, all_jmes):
+def match_word(word, all_jmes, used_ids=set()):
     found_data = None
     for kana_only in [True, False]:
         if found_data is not None:
@@ -371,7 +372,7 @@ def match_word(word, all_jmes):
         for jme in all_jmes:
             # TODO: It should iterate over candidate senses and reject in turn if any fail,
             # instead of approving each qualification independently.
-            if int(jme['id']) in SKIP_ENTRIES.get(word, []) or int(jme['id']) in SKIP_ENTRY_IDS:
+            if int(jme['id']) in SKIP_ENTRIES.get(word, []) or int(jme['id']) in SKIP_ENTRY_IDS or int(jme['id']) in used_ids:
                 continue
 
             ok_pos = False
@@ -427,6 +428,7 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
     }
     words = [e[0] for e in sorted(word_frequencies.items(), key=lambda x: x[1])]
     used_words = set()
+    used_ids = set()
 
     for (level_number, level_entries) in sorted(jlpt_levels.items(), key=lambda x: -x[0]):
         offset = 0
@@ -434,7 +436,9 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
             for entry in level_entries:
                 print(f"N{level_number} {entry['id']} {entry['kanji'][0] if entry['kanji'] else entry['kana'][0]} {entry['sense'][0]['gloss'][0]['text']}")
                 f.write(f"{entry['id']}\n")
-                if 'uk' in [s['misc'] for s in entry['sense']] or not entry['kanji']:
+                used_ids.add(int(entry['id']))
+                # TODO: this kana dedupe could be improved
+                if 'uk' in [s['misc'] for s in entry['sense']] or any(kana['common'] for kana in entry['kana']) or not entry['kanji']:
                     for kana in entry['kana']:
                         used_words.add(kana['text'])
                 for kanji in entry['kanji']:
@@ -451,7 +455,7 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
                 if word in used_words:
                     continue
 
-                found_data = match_word(word, all_jmes)
+                found_data = match_word(word, all_jmes, used_ids=used_ids)
 
                 if found_data is not None:
                     print(f"N{level_number} {found_data['id']} {word} {found_data['sense'][0]['gloss'][0]['text']}")
@@ -460,6 +464,7 @@ def write_jlpt_levels(all_jmes, jlpt_levels, word_frequencies):
                     offset += 1
                     remaining -= 1
                     
+                    used_ids.add(int(found_data['id']))
                     for kanji in found_data['kanji']:
                         used_words.add(kanji['text'])
                     if 'uk' in [s['misc'] for s in found_data['sense']] or not found_data['kanji']:
