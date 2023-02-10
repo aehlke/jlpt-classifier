@@ -48,16 +48,26 @@ SKIP_ENTRY_IDS = {
     2835604, # fold, gets confused with ore as I
     1550770, # historical term ("Japanese league")
     1267460, # groin ("mata")
+    2701220, # Moro people
 }
 SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China', 'Chinese zodiac)',
     ' shogunate', 'ancient Korean', 'Three Kingdoms period', 'Holy Communion', '(Edo-period', '(Edo period',
     '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state', '(Japanese history', 'historical Japanese', 'the Edo period', '(region)', 'warship', ' noh ',
- ' constellation ',]
+ ' constellation ', '(Meiji period)', 'in the Edo period', 'former province ']
 SKIP_WORDS = {
+    u'うい', # ??
+    u'チャン',
+    u'まう', # to finish ...
     u'た', # did
+    u'あっし', # death by crushing
     u'て', # you said
     u'いく', # some
+    u'ます used to indicate respect for the listener (or reader',
+    u'ウェイ', # way
+    u'守護神', # guardian deity
+    u'女子大生',
+    u'クルー', # crew
     u'モー', u'ジョン', u'ドン', u'メイス', u'スパー', 
     u'隼人', # Hayato people (ancient)
     u'宋', u'清国', # Song dynasty, other China dynasty words
@@ -66,7 +76,8 @@ SKIP_WORDS = {
     u'ショート', # short
     u'ラスト', u'ヘッド', u'シティ', u'フル', u'スポンサー', u'プロセス', u'スリー', u'ビルマ', u'ロング',
     u'サリー', # saree
-    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', u'シカゴ', # cities/areas outside Japan
+    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', u'シカゴ', u'河内', # cities/areas outside Japan
+    u'大納言', # chief councillor of state
     u'スタン', # stun
     u'リン', # ring or name?
     u'リリー', # lily
