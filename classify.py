@@ -86,6 +86,10 @@ SKIP_WORDS = {
     u'モー', u'ジョン', u'ドン', u'メイス', u'スパー', 
     u'隼人', # Hayato people (ancient)
     u'宋', u'清国', # Song dynasty, other China dynasty words
+    u'警察庁', # National Police Agency
+    u'デューク', # duke
+    u'王城', # royal castle
+    u'スポット', # spot
     u'ベラ', # wrase (fish)
     u'ラヴ', # love
     u'ショート', # short
@@ -93,7 +97,7 @@ SKIP_WORDS = {
     u'サリー', # saree
     u'三神', # the three gods of creation
     u'魔法陣', # summoning circle
-    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', u'シカゴ', u'河内', u'ワシントン', u'メッカ', u'アムステルダム', u'ナイル', u'バグダード', u'バグダード', u'テキサス', u'リマ', u'ロチェスター', u'蜀', u'ホノルル', # cities/areas outside Japan
+    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', u'シカゴ', u'河内', u'ワシントン', u'メッカ', u'アムステルダム', u'ナイル', u'バグダード', u'バグダード', u'テキサス', u'リマ', u'ロチェスター', u'蜀', u'ホノルル', u'エルサレム', # cities/areas outside Japan
     u'難波', # Naniwa (former name for Osaka region)
     u'グリフォン', # griffon
     u'ドワーフ', # dwarf (esp. in folklore or fantasy literature)
@@ -366,6 +370,7 @@ SKIP_WORDS = {
     u'マジック', # magic
     u'ビジネスマン', # businessman
     u'マスターズ', # the Masters (golf tournament)
+    u'ごと', # shows up as cheating at pachinko
     u'テール', # tail
     u'御前会議', # Imperial Council
     u'キャバレー', # cabaret
@@ -399,6 +404,26 @@ SKIP_WORDS = {
     u'ノーマル', # normal
     u'アーミン', # ermine
     u'ヘア', # hair (of the head
+    u'宮内', # inside the Imperial Palace
+    u'レックス', # REXX
+    u'ジャパン', # Japan
+    u'シンガー', # singer
+    u'ショルダーバッグ', # shoulder bag
+    u'ダンサー', # dancer
+    u'ロッド', # rod
+    u'タキシード', # tuxedo
+    u'ボディガード', # bodyguard
+    u'ボンネット', # bonnet
+    u'ピート', # peat
+    u'クライマックス', # climax
+    u'ネグリジェ', # negligee
+    u'アマゾン', # Amazon
+    u'シルバー', # silver
+    u'工兵', # combat engineer
+    u'シーザー', # Caesar
+    u'ニー', # knee
+    u'ワル', # wicked person
+    u'幕臣', # shogunate retainer
     u'げー', # yuck
     u'文久', # Bunkyū era
     u'そ',
@@ -420,6 +445,8 @@ SKIP_WORDS = {
     u'モビル',
     u'イブ', # eve (esp. Christmas Eve)
     u'浮気', # extramarital sex
+    u'外出し',
+    u'射精',
     u'オナニー',
     u'勃起', # erection
     u'売春婦',
