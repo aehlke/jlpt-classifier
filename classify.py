@@ -365,7 +365,7 @@ SKIP_WORDS = {
     u'マドレーヌ', # madeleine (cake)
     u'マジック', # magic
     u'ビジネスマン', # businessman
-    u'マスターズ', the Masters (golf tournament)
+    u'マスターズ', # the Masters (golf tournament)
     u'テール', # tail
     u'御前会議', # Imperial Council
     u'キャバレー', # cabaret
