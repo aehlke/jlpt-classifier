@@ -20,7 +20,7 @@ JLPT_COLORS = {
 }
 
 SKIP_TYPES = {
-    'n-pr', 'arch', 'int', 'biol', 'vulg', 'X', 'rare', 'v2k-k', 'v2g-k', 'v2t-k', 'v2d-k', 'v2h-k', 'v2b-k', 'v2m-k', 'v2y-k', 'v2r-k', 'v2k-s', 'v2g-s', 'v2s-s', 'v2z-s', 'v2t-s', 'v2d-s', 'v2n-s', 'v2h-s', 'v2b-s', 'v2m-s', 'v2y-s', 'v2r-s', 'v2w-s', 'v4k', 'v4g', 'v4s', 'v4t', 'v4n', 'v4b', 'v4m', 'v2a-s', 'v4h', 'v4r', 'kyb', 'osb', 'ksb', 'ktb', 'tsb', 'thb', 'tsug', 'kyu', 'rkb', 'nab', 'hob', 'adj-kari', 'adj-ku', 'adj-shiku', 'adj-nari', 'sens', 'astron', 'baseb', 'archit', 'astron', 'bot', 'geol', 'mahj', 'med', 'music', 'Shinto', 'shogi', 'sumo', 'zool', 'joc', 'Buddh', 'chem', 'oK', 'ok', 'obs', 'obsc', 'oik', 'on-mim', 'proverb', 'mil', 'poet', 'physics', 'slang', 'ling', 'geom', 'MA', 'math', 'm-sl', 'col', 'chn', 'hist',
+    'n-pr', 'arch', 'int', 'biol', 'vulg', 'X', 'rare', 'v2k-k', 'v2g-k', 'v2t-k', 'v2d-k', 'v2h-k', 'v2b-k', 'v2m-k', 'v2y-k', 'v2r-k', 'v2k-s', 'v2g-s', 'v2s-s', 'v2z-s', 'v2t-s', 'v2d-s', 'v2n-s', 'v2h-s', 'v2b-s', 'v2m-s', 'v2y-s', 'v2r-s', 'v2w-s', 'v4k', 'v4g', 'v4s', 'v4t', 'v4n', 'v4b', 'v4m', 'v2a-s', 'v4h', 'v4r', 'kyb', 'osb', 'ksb', 'ktb', 'tsb', 'thb', 'tsug', 'kyu', 'rkb', 'nab', 'hob', 'adj-kari', 'adj-ku', 'adj-shiku', 'adj-nari', 'sens', 'astron', 'baseb', 'archit', 'astron', 'bot', 'geol', 'mahj', 'med', 'music', 'Shinto', 'shogi', 'sumo', 'zool', 'joc', 'Buddh', 'chem', 'oK', 'ok', 'obs', 'obsc', 'oik', 'on-mim', 'proverb', 'mil', 'poet', 'physics', 'slang', 'ling', 'geom', 'MA', 'math', 'm-sl', 'col', 'chn', 'hist', 'derog', 'sl',
 }
 SKIP_ENTRIES = {
     u'わけ': [1502990], # skip 'division'
@@ -49,12 +49,13 @@ SKIP_ENTRY_IDS = {
     1550770, # historical term ("Japanese league")
     1267460, # groin ("mata")
     2701220, # Moro people
+    2207500, # wrong ramen
 }
 SKIP_GLOSS_SUBSTRINGS = [
     '(Catholic)', '(of China;', '(former province', 'ancient Chinese', 'ancient China', 'Chinese zodiac)',
     ' shogunate', 'ancient Korean', 'Three Kingdoms period', 'Holy Communion', '(Edo-period', '(Edo period',
     '(Muromachi period', '(God of', '(Greek god', '(Confucian', '(god of ', '(city in ', '(in archery', 'non-Yamato', 'Nara-period', '(sensation)', '(of a battlefield', 'Catholic ', '(of China', '(musical)', 'kingdom in China', '(Confucian', '(Roman ', '(dynasty of', '(Edo period', ' in the Edo ', "o'clock", ' dynasty (', 'Chinese state', '(Japanese history', 'historical Japanese', 'the Edo period', '(region)', 'warship', ' noh ',
- ' constellation ', '(Meiji period)', 'in the Edo period', 'former province ']
+ ' constellation ', '(Meiji period)', 'in the Edo period', 'former province ', 'one of the Four Books', 'one of the trigrams', 'goddess', 'god of ', 'feudal era ', '(archaeological', 'archaeological mound', 'former province located ', '(language)', ' the I Ching']
 SKIP_WORDS = {
     u'うい', # ??
     u'チャン',
@@ -63,7 +64,21 @@ SKIP_WORDS = {
     u'あっし', # death by crushing
     u'て', # you said
     u'いく', # some
+    u'ウィング', # wing
+    u'ヒューズ', # fuse
+    u'プラカード', # placard
+    u'モーターボート', # motorboat
+    u'人狼', # werewolf
+    u'幇間', # professional jester
+    u'グランデ', # grand
+    u'若党', # foot soldier
+    u'国府', # Nationalist Government (of China; i.e. under the Kuomintang)
+    u'ハンマー', # hammer
+    u'ホー', # oh
+    u'ルーツ', # roots
+    u'ガン', # gun
     u'ます used to indicate respect for the listener (or reader',
+    u'自由党', # Liberal Party
     u'ウェイ', # way
     u'守護神', # guardian deity
     u'女子大生',
@@ -76,11 +91,113 @@ SKIP_WORDS = {
     u'ショート', # short
     u'ラスト', u'ヘッド', u'シティ', u'フル', u'スポンサー', u'プロセス', u'スリー', u'ビルマ', u'ロング',
     u'サリー', # saree
-    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', u'シカゴ', u'河内', # cities/areas outside Japan
+    u'三神', # the three gods of creation
+    u'魔法陣', # summoning circle
+    u'マニラ', u'ロンドン', u'ニューヨーク', u'ベルリン', u'モスクワ', u'シベリア', u'ウィーン', u'パリ', u'カリフォルニア', u'シカゴ', u'シカゴ', u'河内', u'ワシントン', u'メッカ', u'アムステルダム', u'ナイル', u'バグダード', u'バグダード', u'テキサス', u'リマ', u'ロチェスター', u'蜀', u'ホノルル', # cities/areas outside Japan
+    u'難波', # Naniwa (former name for Osaka region)
+    u'グリフォン', # griffon
+    u'ドワーフ', # dwarf (esp. in folklore or fantasy literature)
+    u'信州', # Shinshū (alt. name of former Shinano province)
+    u'ピンク色', # pink
+    u'犬神', # evil dog spirit
+    u'ハイランド', # highland
+    u'スリップ', # slip
+    u'サック', # sheath
+    u'ギャラ', # fee paid to performing artists, etc.
+    u'シャフト', # shaft (e.g. machinery)
+    u'ストーン', # stone
+    u'交尾', # copulation (among animals)
+    u'シチュエーション', # situation
+    u'ブラ', # bra
+    u'アカデミー', # academy
+    u'みゆき', # imperial visit
+    u'ヤード', # yard (unit of distance)
+    u'フン', # Huns
+    u'ハンター', # hunter
+    u'軍司令官', # army commander
+    u'ショール', # shawl
+    u'船橋', # pontoon bridge
+    u'コネ', # connection
+    u'ラッキー', # lucky
+    u'バトラー', # butler
+    u'人馬', # man and horse
+    u'コミュニケー', # communiqué
+    u'住職', # chief priest (of a Buddhist temple)
+    u'デッキ', # deck (e.g. ship, tape, cassette, observation, train vestibule)
+    u'びく', # bhikkhu (fully ordained Buddhist monk)
+    u'キング', # king
+    u'ムード', # mood
+    u'弾正', # judge (of the Imperial Prosecuting and Investigating Office)
+    u'レッド', # red
+    u'シスター', # sister (sibling)
+    u'ゼウス', # Zeus
+    u'四天王', # the Four Heavenly Kings
+    u'竜神', # dragon god
+    u'クリスタル', # crystal
+    u'コニャック', # cognac
+    u'金太郎', # Kintarō
+    u'コスプレ', # cosplay
+    u'ラッシュ', # rush
+    u'焼酎', # shōchū
+    u'シャー', # shah
+    u'クラン', # clan
+    u'アポロ', # Apollo program
+    u'オブ', # of
+    u'マーチ', # march
+    u'カッター', # cutter
+    u'青酸カリ', # potassium cyanide
+    u'ディナー', # dinner
+    u'マドンナ', # madonna
+    u'くノ一', # female ninja
+    u'ホープ', # hope
+    u'ランタン', # lantern
+    u'エッグ', # egg (esp. chicken eggs)
+    u'マンモス', # mammoth
+    u'コカイン', # cocaine
+    u'ブローカー', # broker
+    u'カウント', # count
+    u'軍馬', # warhorse
+    u'邪神', # evil god
+    u'オウム', # Aum Shinrikyo
+    u'カトリック', # Catholic
+    u'ラッド', # common rudd
+    u'インキ', # ink
+    u'アタッシェケース', # attaché case
+    u'ギャル', # gyaru
+    u'ユーモラス', # humorous
+    u'修道女', # (Catholic) nun
+    u'アイドル', # performer
+    u'アトラス', # Atlas
+    u'鶯', # Japanese bush warbler
+    u'マックス', # maximum
+    u'バール', # bar
+    u'メガ', # mega
+    u'ストリップ', # strip show
+    u'コサック', # Cossack
+    u'スタッド', # stud
+    u'スキュラ', # Scylla monster
+    u'オランダ人',
+    u'永禄', # Eiroku era
+    u'貂', # Japanese marten
+    u'グレイス', # grace
+    u'ブレイク', # break (rest)
+    u'ポーカー', # poker
+    u'ブレード', # blade
+    u'袍', # hou, round neck robe for imperial court
+    u'ラブレター', # love letter
+    u'ゴリ', # a specific fish
+    u'エアロック', # air lock
+    u'キュー', # cue (billiards, pool)
+    u'トランス', # transformer
+    u'舞子', # Maiko
     u'大納言', # chief councillor of state
     u'スタン', # stun
     u'リン', # ring or name?
     u'リリー', # lily
+    u'フット', # foot
+    u'焼夷弾', # incendiary bomb
+    u'ブレイク', # break (rest)
+    u'スロープ', # slope
     u'てる', # teiru but finds weird matches, colloquialism
     u'ナチス',
     u'ウルフ', # wolf
@@ -153,7 +270,7 @@ SKIP_WORDS = {
     u'ですが', # but
     u'イギリス人', u'中国人', u'アメリカ人', u'ユダヤ人', u'フランス人', u'ドイツ人', u'インディアン',
     u'ドイツ語', u'タイ', u'イタリア人', u'韓国人', u'ロシア人', u'フランス語', u'ラテン語', u'日本人',
-    u'クリ', u'ペニス', '男根', u'性器', u'股間', # specific genital
+    u'クリ', u'ペニス', '男根', u'性器', u'股間', u'膣', u'勃起', u'陰茎', # specific genital
     u'ユリ', u'タラ', u'ケイ',
     u'結界', # temple boundaries
     u'ドクター', u'エリア',
@@ -162,7 +279,11 @@ SKIP_WORDS = {
     u'巫女', # miko
     u'チン',
     u'ジープ', u'バーサーカー',
-    u'特攻', u'心中', u'自殺', u'遺書', u'切腹', # suicide
+    u'特攻', u'心中', u'自殺', u'遺書', u'切腹', u'自害', # suicide
+    u'ビクター', # victor
+    u'セールスマン', # salesman
+    u'シリング', # shillin
+    u'ケイン', # cane
     u'ヒトラー',
     u'チビ', # "small child"
     u'洗礼', # baptism
@@ -173,14 +294,53 @@ SKIP_WORDS = {
     u'ソウル',
     u'グラント', u'ブラッド',
     u'生首', # freshly severed head
+    u'デー', # day (as in holiday)
     u'皆殺し', # massacre
+    u'ナチ', u'ナチス', u'ヒットラー', # Nazi
+    u'海兵隊', # Marine Corps
+    u'同人誌', # dōjinshi
+    u'山の神', # mountain god
+    u'井戸端', # side of well
+    u'キャン', # yelp
+    u'アタック', # attack
+    u'艦船', # warships and other vessels
+    u'福音書', # the Gospels
+    u'チャクラ', # chakra
+    u'リアリティ', # reality
+    u'総司令官', # commander-in-chief
+    u'クリーム色', # cream (colour, color)
+    u'フィン', # (diving) fin
+    u'リンチ', # beating (inflicted as punishment)
+    u'チャンピオン', # champion
+    u'ガール', # girl
+    u'旧約聖書', # Old Testament
+    u'般若', # prajna (wisdom required to attain enlightenment)
+    u'サンダー', # thunder
+    u'テイラー', # tailor
+    u'ポリス', # police
     u'血だらけ', u'血まみれ', u'致命傷', # covered in blood; wounds
     u'ブラック',
     u'アナ',
+    u'レス', #ereply (on an Internet message board, chat clitnt, etc.)
+    u'聖職者', # clergyman
+    u'クッキー', # cookie
     u'女体',
     u'ファミリー',
+    u'クソ', # damn
+    u'御台所', # wife of a shogun
+    u'リムジン', # limousine
+    u'ユニコーン', # unicorn
     u'ハーン', # khan
+    u'カーン', # kern
     u'パンティ',
+    u'コンドーム', # condom
+    u'キャンバス', # canvas
+    u'キラー', # killer
+    u'キック', # kick
+    u'ハイジャック', # hijack
+    u'ビキニ', # bikini (swimwear)
+    u'モルヒネ', # morphine
+    u'武家屋敷', # samurai residence
     u'ワゴン',
     u'二ノ宮', # 2nd most important imperial shrine
     u'ウエスト', u'ダリア', u'マシーン', u'クリア', u'カイロ', u'フラ', u'ダッシュ',
@@ -191,7 +351,23 @@ SKIP_WORDS = {
     u'ホワイト', u'マック', u'コマ',
     u'後宮', # inner palace reserved for women
     u'なでしこ', # pink (flower type)
-    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', u'せり', u'榊', u'芭蕉', u'伊吹', u'藤', u'李', u'カシュー', u'桔梗', u'青柳', u'メリッサ', u'正木', u'萩', u'鳶', u'葛', u'狸', u'蔦', u'山吹', u'ゆり', u'郁子', u'山吹', # random plants
+    u'アオイ', u'真弓', u'真木', u'ポワロ', u'葵', u'せり', u'榊', u'芭蕉', u'伊吹', u'藤', u'李', u'カシュー', u'桔梗', u'青柳', u'メリッサ', u'正木', u'萩', u'鳶', u'葛', u'狸', u'蔦', u'山吹', u'ゆり', u'郁子', u'山吹', u'欅', u'ヒース', u'赤木', u'ナギ', u'クス', # random plants
+    u'皇后', # (Japanese) empres
+    u'関ケ原', # Sekigahara (battle site, 1600)
+    u'レベリオン', # rebellion
+    u'バスト', # bust (measurement)
+    u'ギリシア人', u'ヨーロッパ人',
+    u'ブーメラン', # boomerang
+    u'如来', # Tathagata
+    u'いい天気',
+    u'グリップ', # grip
+    u'シップ', # ship
+    u'マドレーヌ', # madeleine (cake)
+    u'マジック', # magic
+    u'ビジネスマン', # businessman
+    u'マスターズ', the Masters (golf tournament)
+    u'テール', # tail
+    u'御前会議', # Imperial Council
     u'キャバレー', # cabaret
     u'剣客', # master swordsman
     u'コーン', # cone
@@ -214,22 +390,85 @@ SKIP_WORDS = {
     u'メイド',
     u'おいおい',
     u'ろ',
+    u'ヘリオス', # Helios
+    u'ギロチン', # guillotine
+    u'シェリー', # sherry
+    u'スコープ', # scope
+    u'テレ', # tele
+    u'ペンス', # pence (monetary unit)
+    u'ノーマル', # normal
+    u'アーミン', # ermine
+    u'ヘア', # hair (of the head
+    u'げー', # yuck
+    u'文久', # Bunkyū era
     u'そ',
     u'クラスメート',
+    u'ツイ', # Twitter
+    u'ウインドウ', # window
+    u'エーテル', # ether
+    u'ブック', # book
+    u'マガジン', # magazine
+    u'テラ', # tera-
+    u'アルプス', # the Alps
+    u'ホームレス', # homeless
+    u'ティッシュ', # tissue
+    u'ごまかし', # hanky-panky
+    u'チョン', # derogatory slang
+    u'ハリス',
+    u'ディーン', # dean
+    u'ノエル', # Christmas
     u'モビル',
+    u'イブ', # eve (esp. Christmas Eve)
     u'浮気', # extramarital sex
+    u'オナニー',
+    u'勃起', # erection
+    u'売春婦',
     u'ぢ', # hemorrhoids
     u'レオ',
     u'セックス', u'性欲', u'エロ',
     u'地蔵', # buddhist word
     u'糞', # kuso
+    u'スペード', # spades (suit)
     u'ヨ',
     u'領民', # population of a fief
     u'溺死', # death by drowning
     u'パット', # putt
     u'ジュール', # joule
     u'律', # ancient east asian law
+    u'御子', # Son of God
+    u'一万円',
+    u'フルート', # flute
+    u'クオリア', # quale
+    u'聖戦', # holy war
+    u'テレパシー', # telepathy
+    u'イングランド', # England
+    u'バリケード', # barricade
+    u'魔剣', # magic sword
+    u'袈裟', # kasaya
+    u'ピット', # pit
+    u'永禄', # Eiroku era
+    u'サッカー', # soccer
+    u'グレイ', # grey
+    u'ベージュ', # beige
+    u'スコッチ', # Scotch
+    u'聖母', # holy mother
+    u'聖杯', # chalice (for Holy Communion)
+    u'キリスト', # Christ
+    u'麻', # cannabis
+    u'マダム', # madam
+    u'キノ', # keno (casino game)
+    u'スパイ', # spy
+    u'メイ', # May
+    u'セ', # Central League (Japanese baseball league)
+    u'ぶす', # ugly woman
+    u'殿様', # nobleman
+    u'チェッカー', # checkers (board game)
+    u'ホステス', # hostess
+    u'ライダー', # rider
     u'ダンブル', # ship's hold
+    u'くそ', # damn
+    u'説教', # sermon
+    u'畜生', # damnit
     u'アッラー', # allah
     u'ホントに',
     u'怨霊', # revengeful ghost
